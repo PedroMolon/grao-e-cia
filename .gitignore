@@ -1,0 +1,55 @@
+# ==========================================
+# Variáveis de Ambiente e Segredos
+# ==========================================
+.env
+*.env.local
+
+# ==========================================
+# IDEs e Editores de Código
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.settings/
+.classpath
+.project
+.factorypath
+
+# Mac / Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# Build e Compilação (Maven / Gradle)
+# ==========================================
+# Maven (se usar Maven)
+**/target/
+*.jar
+*.war
+*.ear
+
+# Gradle (se usar Gradle)
+**/.gradle/
+**/build/
+
+# ==========================================
+# Logs e Arquivos Temporários
+# ==========================================
+*.log
+logs/
+*.tmp
+
+# ==========================================
+# Docker e Volumes Locais
+# ==========================================
+# Ignora arquivos temporários do docker se houver
+.docker/
