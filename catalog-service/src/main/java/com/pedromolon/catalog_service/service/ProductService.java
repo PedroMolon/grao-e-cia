@@ -56,11 +56,13 @@ public class ProductService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        productRepository.findById(id)
+    public void desactive(Long id) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        productRepository.deleteById(id);
+        product.setActive(false);
+
+        productRepository.save(product);
     }
 
 }
