@@ -4,7 +4,7 @@ import com.pedromolon.auth_service.domain.Role;
 import com.pedromolon.auth_service.domain.User;
 import com.pedromolon.auth_service.dto.request.RegisterRequest;
 import com.pedromolon.auth_service.dto.response.RegisterResponse;
-import com.pedromolon.auth_service.exception.BusinessException;
+import com.pedromolon.auth_service.exception.EmailAlreadyExistsException;
 import com.pedromolon.auth_service.exception.ResourceNotFoundException;
 import com.pedromolon.auth_service.repository.RoleRepository;
 import com.pedromolon.auth_service.repository.UserRepository;
@@ -29,7 +29,7 @@ public class AuthService {
 
     public RegisterResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new BusinessException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
         User user = new User();
