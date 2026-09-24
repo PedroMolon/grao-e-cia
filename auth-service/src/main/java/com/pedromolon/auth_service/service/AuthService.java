@@ -9,6 +9,7 @@ import com.pedromolon.auth_service.exception.ResourceNotFoundException;
 import com.pedromolon.auth_service.repository.RoleRepository;
 import com.pedromolon.auth_service.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -19,9 +20,9 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -33,7 +34,7 @@ public class AuthService {
         }
 
         User user = new User();
-        user.setName(request.user());
+        user.setName(request.name());
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
 
@@ -46,7 +47,7 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        return new RegisterResponse(savedUser.getId(), savedUser.getEmail());
+        return new RegisterResponse(savedUser.getId(), savedUser.getName());
     }
 
 }
