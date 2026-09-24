@@ -30,9 +30,8 @@ public class TokenService {
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("minha-api")
-                .subject(user.getName())
+                .subject(user.getEmail())
                 .claim("userId", user.getId().toString())
-                .claim("email", user.getEmail())
                 .claim("roles", roles)
                 .issuedAt(instant)
                 .expiresAt(instant.plusSeconds(expiresIn))

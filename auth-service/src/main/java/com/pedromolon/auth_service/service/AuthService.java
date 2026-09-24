@@ -56,7 +56,7 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new UnauthorizedException("User not found"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");
