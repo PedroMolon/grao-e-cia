@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record ProductRequest(
-        @NotBlank(message = "Product type is required") ProductType type,
+        @NotNull(message = "Product type is required") ProductType type,
         @NotBlank(message = "Name is required") String name,
-        @NotBlank(message = "Description is required") String description,
+        String description,
         @NotNull(message = "Price is required") @Positive(message = "Price must be positive") BigDecimal price
 ) {
 }
