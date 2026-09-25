@@ -28,13 +28,11 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole()")
     public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findById(id));
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole()")
     public ResponseEntity<Page<ProductResponse>> findAllProducts(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.findAllProductActive(pageable));
     }
