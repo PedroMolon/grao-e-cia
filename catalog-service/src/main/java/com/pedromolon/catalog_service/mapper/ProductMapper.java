@@ -4,6 +4,7 @@ import com.pedromolon.catalog_service.domain.Product;
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -11,5 +12,7 @@ public interface ProductMapper {
     Product toEntity(ProductRequest productRequest);
 
     ProductResponse toResponse(Product product);
+
+    void updateEntityFromRequest(ProductRequest request, @MappingTarget Product product);
 
 }
