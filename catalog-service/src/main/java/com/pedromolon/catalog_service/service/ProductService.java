@@ -1,6 +1,7 @@
 package com.pedromolon.catalog_service.service;
 
 import com.pedromolon.catalog_service.domain.Product;
+import com.pedromolon.catalog_service.domain.ProductType;
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
 import com.pedromolon.catalog_service.dto.request.ProductStockQuantityRequest;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
@@ -38,8 +39,15 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductResponse> findAllProductActive(Pageable pageable) {
-        return productRepository.findAllByActiveTrue(pageable)
+    public Page<ProductResponse> findAllProductActive(ProductType type, String name, Pageable pageable) {
+        if (type == null && (name == null || name.isBlank())) {
+            return productRepository.findAllByActiveTrue(pageable)
+                    .map(productMapper::toResponse);
+        }
+
+        String searchName = (name != null && !name.isBlank()) ? name.trim() : null;
+
+        return productRepository.findAllActiveFiltered(type, searchName, pageable)
                 .map(productMapper::toResponse);
     }
 
@@ -48,16 +56,13 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        product.setName(request.name());
-        product.setDescription(request.description());
-        product.setType(request.type());
-        product.setPrice(request.price());
+        productMapper.updateEntityFromRequest(request, product);
 
         return productMapper.toResponse(productRepository.save(product));
     }
 
     @Transactional
-    public void desactive(Long id) {
+    public void deactivate(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 

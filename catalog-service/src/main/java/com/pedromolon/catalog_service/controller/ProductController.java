@@ -1,5 +1,6 @@
 package com.pedromolon.catalog_service.controller;
 
+import com.pedromolon.catalog_service.domain.ProductType;
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
 import com.pedromolon.catalog_service.dto.request.ProductStockQuantityRequest;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
@@ -34,8 +35,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse>> findAllProducts(Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllProductActive(pageable));
+    public ResponseEntity<Page<ProductResponse>> findAllProducts(
+            @RequestParam(required = false) ProductType type,
+            @RequestParam(required = false) String name,
+            Pageable pageable
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findAllProductActive(type, name, pageable));
     }
 
     @PutMapping("/{id}")
@@ -46,8 +51,8 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> desactive(@PathVariable Long id) {
-        productService.desactive(id);
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        productService.deactivate(id);
         return ResponseEntity.noContent().build();
     }
 

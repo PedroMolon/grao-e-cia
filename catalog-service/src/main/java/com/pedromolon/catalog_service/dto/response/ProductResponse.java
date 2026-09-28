@@ -12,6 +12,7 @@ public record ProductResponse(
         String name,
         String description,
         BigDecimal price,
-        Boolean active
+        Boolean active,
+        Integer stockQuantity
 ) {
 }
