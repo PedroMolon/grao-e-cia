@@ -2,6 +2,7 @@ package com.pedromolon.catalog_service.service;
 
 import com.pedromolon.catalog_service.domain.Product;
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
+import com.pedromolon.catalog_service.dto.request.ProductStockQuantityRequest;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
 import com.pedromolon.catalog_service.exception.ResourceNotFoundException;
 import com.pedromolon.catalog_service.mapper.ProductMapper;
@@ -63,6 +64,26 @@ public class ProductService {
         product.setActive(false);
 
         productRepository.save(product);
+    }
+
+    @Transactional
+    public ProductResponse updateStock(Long id, ProductStockQuantityRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        product.adjustStockQuantity(request.quantity());
+
+        return productMapper.toResponse(productRepository.save(product));
+    }
+
+    @Transactional
+    public ProductResponse reserveStock(Long id, ProductStockQuantityRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        product.reserveStock(request.quantity());
+
+        return productMapper.toResponse(productRepository.save(product));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.pedromolon.catalog_service.controller;
 
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
+import com.pedromolon.catalog_service.dto.request.ProductStockQuantityRequest;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
 import com.pedromolon.catalog_service.service.ProductService;
 import jakarta.validation.Valid;
@@ -48,6 +49,17 @@ public class ProductController {
     public ResponseEntity<Void> desactive(@PathVariable Long id) {
         productService.desactive(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/stock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ProductResponse> updateStockQuantity(@PathVariable Long id, @RequestBody ProductStockQuantityRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.updateStock(id, request));
+    }
+
+    @PostMapping("/{id}/reserve")
+    public ResponseEntity<ProductResponse> reserveStock(@PathVariable Long id, @RequestBody ProductStockQuantityRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.reserveStock(id, request));
     }
 
 }
