@@ -53,12 +53,12 @@ public class ProductController {
 
     @PatchMapping("/{id}/stock")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProductResponse> updateStockQuantity(@PathVariable Long id, @RequestBody ProductStockQuantityRequest request) {
+    public ResponseEntity<ProductResponse> updateStockQuantity(@PathVariable Long id, @RequestBody @Valid ProductStockQuantityRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.updateStock(id, request));
     }
 
     @PostMapping("/{id}/reserve")
-    public ResponseEntity<ProductResponse> reserveStock(@PathVariable Long id, @RequestBody ProductStockQuantityRequest request) {
+    public ResponseEntity<ProductResponse> reserveStock(@PathVariable Long id, @RequestBody @Valid ProductStockQuantityRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.reserveStock(id, request));
     }
 

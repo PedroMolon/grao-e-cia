@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.coyote.BadRequestException;
 
 import java.math.BigDecimal;
 
@@ -48,6 +47,9 @@ public class Product {
         if (quantity < 0) {
             throw new BusinessException("Quantity cannot be negative");
         }
+        if (quantity > this.stockQuantity) {
+            throw new BusinessException("Insufficient stock");
+        }
 
         this.stockQuantity = quantity;
     }
@@ -58,6 +60,9 @@ public class Product {
         }
         if (quantity < 0) {
             throw new BusinessException("Quantity cannot be negative");
+        }
+        if (quantity > this.stockQuantity) {
+            throw new BusinessException("Insufficient stock");
         }
 
         this.stockQuantity -= quantity;
