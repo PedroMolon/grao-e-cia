@@ -47,9 +47,6 @@ public class Product {
         if (quantity < 0) {
             throw new BusinessException("Quantity cannot be negative");
         }
-        if (quantity > this.stockQuantity) {
-            throw new BusinessException("Insufficient stock");
-        }
 
         this.stockQuantity = quantity;
     }
@@ -58,8 +55,8 @@ public class Product {
         if (this.type != ProductType.COFFEE_BAG) {
             throw new BusinessException("Stock quantity can only be adjusted for coffee bag");
         }
-        if (quantity < 0) {
-            throw new BusinessException("Quantity cannot be negative");
+        if (quantity <= 0) {
+            throw new BusinessException("Quantity to reserve must be greater than 0");
         }
         if (quantity > this.stockQuantity) {
             throw new BusinessException("Insufficient stock");
