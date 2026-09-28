@@ -1,5 +1,6 @@
 package com.pedromolon.catalog_service.domain;
 
+import com.pedromolon.catalog_service.exception.BusinessException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,5 +36,33 @@ public class Product {
 
     @Column(nullable = false)
     private Boolean active = true;
+
+    @Column(name = "stock_quantity", nullable = false)
+    private int stockQuantity = 0;
+
+    public void adjustStockQuantity(int quantity) {
+        if (this.type != ProductType.COFFEE_BAG) {
+            throw new BusinessException("Stock quantity can only be adjusted for coffee bag");
+        }
+        if (quantity < 0) {
+            throw new BusinessException("Quantity cannot be negative");
+        }
+
+        this.stockQuantity = quantity;
+    }
+
+    public void reserveStock(int quantity) {
+        if (this.type != ProductType.COFFEE_BAG) {
+            throw new BusinessException("Stock quantity can only be adjusted for coffee bag");
+        }
+        if (quantity <= 0) {
+            throw new BusinessException("Quantity to reserve must be greater than 0");
+        }
+        if (quantity > this.stockQuantity) {
+            throw new BusinessException("Insufficient stock");
+        }
+
+        this.stockQuantity -= quantity;
+    }
 
 }
