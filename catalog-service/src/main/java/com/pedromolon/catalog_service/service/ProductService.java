@@ -8,6 +8,8 @@ import com.pedromolon.catalog_service.dto.response.ProductResponse;
 import com.pedromolon.catalog_service.exception.ResourceNotFoundException;
 import com.pedromolon.catalog_service.mapper.ProductMapper;
 import com.pedromolon.catalog_service.repository.ProductRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
+    @Cacheable(value = "products", key = "#id")
     @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         return productRepository.findById(id)
@@ -51,6 +54,7 @@ public class ProductService {
                 .map(productMapper::toResponse);
     }
 
+    @CacheEvict(value = "products", key = "#id")
     @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = productRepository.findById(id)
@@ -61,6 +65,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
+    @CacheEvict(value = "products", key = "#id")
     @Transactional
     public void deactivate(Long id) {
         Product product = productRepository.findById(id)
@@ -71,6 +76,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    @CacheEvict(value = "products", key = "#id")
     @Transactional
     public ProductResponse updateStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
@@ -81,6 +87,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
+    @CacheEvict(value = "products", key = "#id")
     @Transactional
     public ProductResponse reserveStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
