@@ -56,7 +56,7 @@ public class ProductService {
                 .map(productMapper::toResponse);
     }
 
-    @CacheEvict(value = "cardapio", key = "#id")
+    @CacheEvict(value = "cardapio", allEntries = true)
     @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = productRepository.findById(id)
@@ -67,7 +67,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
-    @CacheEvict(value = "cardapio", key = "#id")
+    @CacheEvict(value = "cardapio", allEntries = true)
     @Transactional
     public void deactivate(Long id) {
         Product product = productRepository.findById(id)
@@ -78,7 +78,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    @CacheEvict(value = "cardapio", key = "#id")
+    @CacheEvict(value = "cardapio", allEntries = true)
     @Transactional
     public ProductResponse updateStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
@@ -89,7 +89,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
-    @CacheEvict(value = "cardapio", key = "#id")
+    @CacheEvict(value = "cardapio", allEntries = true)
     @Transactional
     public ProductResponse reserveStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
