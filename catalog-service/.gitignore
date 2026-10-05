@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+### Air IDE ###
+.air/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
