@@ -26,6 +26,7 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
+    @CacheEvict(value = "cardapio", allEntries = true)
     @Transactional
     public ProductResponse save(ProductRequest request) {
         Product product = productMapper.toEntity(request);
@@ -41,6 +42,7 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
     }
 
+    @Cacheable(value = "cardapio", key = "{#type, #name, #pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     @Transactional(readOnly = true)
     public Page<ProductResponse> findAllProductActive(ProductType type, String name, Pageable pageable) {
         if (type == null && (name == null || name.isBlank())) {
@@ -54,7 +56,7 @@ public class ProductService {
                 .map(productMapper::toResponse);
     }
 
-    @CacheEvict(value = "products", key = "#id")
+    @CacheEvict(value = "cardapio", key = "#id")
     @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = productRepository.findById(id)
@@ -65,7 +67,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
-    @CacheEvict(value = "products", key = "#id")
+    @CacheEvict(value = "cardapio", key = "#id")
     @Transactional
     public void deactivate(Long id) {
         Product product = productRepository.findById(id)
@@ -76,7 +78,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    @CacheEvict(value = "products", key = "#id")
+    @CacheEvict(value = "cardapio", key = "#id")
     @Transactional
     public ProductResponse updateStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
@@ -87,7 +89,7 @@ public class ProductService {
         return productMapper.toResponse(productRepository.save(product));
     }
 
-    @CacheEvict(value = "products", key = "#id")
+    @CacheEvict(value = "cardapio", key = "#id")
     @Transactional
     public ProductResponse reserveStock(Long id, ProductStockQuantityRequest request) {
         Product product = productRepository.findById(id)
