@@ -1,9 +1,12 @@
 package com.pedromolon.catalog_service.controller;
 
 import com.pedromolon.catalog_service.domain.ProductType;
+import com.pedromolon.catalog_service.dto.request.GenerateDescriptionRequest;
 import com.pedromolon.catalog_service.dto.request.ProductRequest;
 import com.pedromolon.catalog_service.dto.request.ProductStockQuantityRequest;
+import com.pedromolon.catalog_service.dto.response.GenerateDescriptionResponse;
 import com.pedromolon.catalog_service.dto.response.ProductResponse;
+import com.pedromolon.catalog_service.service.ProductAiService;
 import com.pedromolon.catalog_service.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -18,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductAiService productAiService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductAiService productAiService) {
         this.productService = productService;
+        this.productAiService = productAiService;
     }
 
     @PostMapping
@@ -65,6 +70,12 @@ public class ProductController {
     @PostMapping("/{id}/reserve")
     public ResponseEntity<ProductResponse> reserveStock(@PathVariable Long id, @RequestBody @Valid ProductStockQuantityRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.reserveStock(id, request));
+    }
+
+    @PostMapping("/gerar-descricao")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<GenerateDescriptionResponse> generateDescription(@RequestBody @Valid GenerateDescriptionRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(productAiService.generateDescription(request));
     }
 
 }

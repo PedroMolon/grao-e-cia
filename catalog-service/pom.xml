@@ -113,6 +113,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-spring-boot-starter</artifactId>
+			<version>1.20.0-beta30</version>
+		</dependency>
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-ollama-spring-boot4-starter</artifactId>
+			<version>1.21.0-beta31</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
